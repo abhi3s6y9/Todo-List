@@ -1,10 +1,32 @@
 let tasks = [];
-const taskList = document.getElementById('list');
+const tasksList = document.getElementById('list');
 const addTaskInput = document.getElementById('add');
 const tasksCounter = document.getElementById('tasks-counter');
 
 
-function renderList () {}
+function addTaskToDOM (task) {
+    const li = document.createElement('li');
+
+    li.innerHTML = `
+        <input type="checkbox" id="${task.id}" ${task.done ? 'checked' : ''} class="custom-checkbox">
+        <label for="${task.id}">${task.text}</label>
+        
+        <i class="fa-regular fa-square-minus delete" data-id="${task.id}"></i>
+    `;
+
+    tasksList.append(li);
+}
+
+
+function renderList () {
+    tasksList.innerHTML = '';
+
+    for(let i=0; i < tasks.length; i++){
+        addTaskToDOM(tasks[i]);
+    }
+
+    tasksCounter.innerHTML = tasks.length;
+}
 
 
 function markTaskAsComplete (taskId) {
