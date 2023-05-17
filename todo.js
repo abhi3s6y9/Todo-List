@@ -6,14 +6,32 @@ const tasksCounter = document.getElementById('tasks-counter');
 
 function renderList () {}
 
-function markTaskAsComplete (taskId) {}
+
+function markTaskAsComplete (taskId) {
+    // filter function will return array of task
+    const task = tasks.filter(function(task){
+        return task.id === taskId
+    });
+
+    if(task.length > 0){
+        const currentTask = task[0];
+
+        currentTask.done = !currentTask.done;
+        renderList();
+        showNotification("Task marked as complete");
+        return;
+    }
+
+    showNotification("Could not mark the Task as complete");
+}
+
 
 // To delete a task from array and show notification
 function deleteTask (taskId) {
     // Create a new task array from the existing tasks array by using filter function of array
     const newTasks = tasks.filter(function(task){
         return task.id !== taskId
-    })
+    });
 
     // make the original tasks array point to newTasks array
     tasks = newTasks;
@@ -21,6 +39,7 @@ function deleteTask (taskId) {
     renderList();
     showNotification("Task deleted successfully");
 }
+
 
 // To add the Task in the tasks array and call renderList function after that
 function addTask (task) {
@@ -34,11 +53,14 @@ function addTask (task) {
     showNotification("Task cannot be added");
 }
 
+
 // Function to show Notification when there is some error, task added or deleted
 function showNotification(text) {
     alert(text);
 }
 
+
+// Task should be added after the user fills the required field and presses Enter
 function handleInputKeypress(e) {
     if(e.key == 'Enter'){
         const text = e.target.value;
@@ -61,5 +83,5 @@ function handleInputKeypress(e) {
 
 }
 
-addTaskInput.addEventListener('keyup', handleInputKeypress);
 
+addTaskInput.addEventListener('keyup', handleInputKeypress);
