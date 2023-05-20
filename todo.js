@@ -10,8 +10,7 @@ function addTaskToDOM (task) {
     li.innerHTML = `
         <input type="checkbox" id="${task.id}" ${task.done ? 'checked' : ''} class="custom-checkbox">
         <label for="${task.id}">${task.text}</label>
-        
-        <i class="fa-regular fa-square-minus delete" data-id="${task.id}"></i>
+        <i class="delete" data-id="${task.id}" style="color:red;">Delete</i>
     `;
 
     tasksList.append(li);
@@ -30,7 +29,7 @@ function renderList () {
 
 
 function markTaskAsComplete (taskId) {
-    // filter function will return array of task
+    // filter function will return array of task objects
     const task = tasks.filter(function(task){
         return task.id === taskId
     });
@@ -40,7 +39,12 @@ function markTaskAsComplete (taskId) {
 
         currentTask.done = !currentTask.done;
         renderList();
-        showNotification("Task marked as complete");
+
+        if(currentTask.done)
+            showNotification("Task marked as complete");
+        else
+            showNotification("Task unchecked");
+
         return;
     }
 
@@ -52,7 +56,7 @@ function markTaskAsComplete (taskId) {
 function deleteTask (taskId) {
     // Create a new task array from the existing tasks array by using filter function of array
     const newTasks = tasks.filter(function(task){
-        return task.id !== taskId
+        return task.id !== taskId;
     });
 
     // make the original tasks array point to newTasks array
@@ -106,4 +110,23 @@ function handleInputKeypress(e) {
 }
 
 
+function handleClickListener(e) {
+    const target = e.target;
+    console.log(target);
+
+    if(target.className === 'custom-checkbox'){
+        const taskId = target.id;
+        markTaskAsComplete(taskId);
+        return;
+    }
+    else if(target.className === 'delete'){
+        const taskId = target.dataset.id;
+        deleteTask(taskId);
+        return;
+    }
+}
+
+
 addTaskInput.addEventListener('keyup', handleInputKeypress);
+
+document.addEventListener('click', handleClickListener);
