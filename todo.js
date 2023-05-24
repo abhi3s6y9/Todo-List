@@ -1,22 +1,26 @@
 let tasks = [];
 const tasksList = document.getElementById('list');
 const addTaskInput = document.getElementById('add');
+const addTaskButton = document.getElementById('add-button');
 const tasksCounter = document.getElementById('tasks-counter');
 
 
+// Function to add the task list to web page
 function addTaskToDOM (task) {
     const li = document.createElement('li');
 
     li.innerHTML = `
         <input type="checkbox" id="${task.id}" ${task.done ? 'checked' : ''} class="custom-checkbox">
-        <label for="${task.id}">${task.text}</label>
-        <i class="delete" data-id="${task.id}" style="color:red;">Delete</i>
+        <label for="${task.id}"> ${task.text} </label>
+        <i class="fa-regular fa-square-minus" id="delete" data-id="${task.id}" style="color:red;"></i>
     `;
 
     tasksList.append(li);
 }
 
 
+// Function to loop over the tasks array and call addTaskToDOM function to show list on web page one by one. 
+// Then it will update the tasksCounter as well from the length of tasks array
 function renderList () {
     tasksList.innerHTML = '';
 
@@ -28,6 +32,7 @@ function renderList () {
 }
 
 
+// Function to toggle the boolean property "done" of task object
 function markTaskAsComplete (taskId) {
     // filter function will return array of task objects
     const task = tasks.filter(function(task){
@@ -92,13 +97,13 @@ function handleInputKeypress(e) {
         const text = e.target.value;
 
         if (!text) {
-            showNotification('Task text can not be empty');
+            showNotification('Task text cannot be empty');
             return;
         }
 
         // Task object
         const task = {
-            text, // short hand for "text: text,"
+            text, // short hand for "text: text"
             id: Date.now().toString(),
             done: false
         }
@@ -110,16 +115,39 @@ function handleInputKeypress(e) {
 }
 
 
+// Function for Add button
+function handleInputButton(e){
+    if(e){
+        const text = addTaskInput.value;
+
+        if(!text){
+            showNotification("Text cannot be empty!");
+            return;
+        }
+
+        // Task object
+        const task = {
+            text, // short hand for "text: text"
+            id: Date.now().toString(),
+            done: false
+        }
+
+        addTaskInput.value = '';
+        addTask(task);
+    }
+}
+
+
+// Function for Event delegation to see functionality in action
 function handleClickListener(e) {
     const target = e.target;
-    console.log(target);
 
     if(target.className === 'custom-checkbox'){
         const taskId = target.id;
         markTaskAsComplete(taskId);
         return;
     }
-    else if(target.className === 'delete'){
+    else if(target.id === 'delete'){
         const taskId = target.dataset.id;
         deleteTask(taskId);
         return;
@@ -127,6 +155,10 @@ function handleClickListener(e) {
 }
 
 
-addTaskInput.addEventListener('keyup', handleInputKeypress);
+function initializeApp () {
+    addTaskInput.addEventListener('keyup', handleInputKeypress);
+    addTaskButton.addEventListener('click', handleInputButton);
+    document.addEventListener('click', handleClickListener);
+}
 
-document.addEventListener('click', handleClickListener);
+initializeApp();

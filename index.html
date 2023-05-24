@@ -1,20 +1,23 @@
 
 <html>
   <head>
-    <title>Todo</title>
+    <title>Todo List</title>
     <script src="https://kit.fontawesome.com/704804ad63.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="styles.css">
   </head>
   <body>
     <h1>Todo List App</h1>
     <div id="container">
-      <input placeholder="Add a task" class="add-task" id="add" data-helloWord="asdasdas"/>
+      <div id="input-area">
+        <input placeholder="Add a task" class="add-task" id="add"/>
+        <span id="add-button"><i class="fa-regular fa-square-plus"></i></span>
+      </div>
       <span id="total-tasks">Total tasks: <span id="tasks-counter">0</span></span>
-      <ul id="list">
+      <ul type="none" id="list">
         <!-- <li>
-          <input type="checkbox" id="task1" data-id="12" class="custom-checkbox">
-          <label for="task1">Buy groceries</label>
-          <img src="bin.svg" class="delete" data-id="12" />
+          <input type="checkbox" id="task_id" class="custom-checkbox">
+          <label for="task_id">Task text</label>
+          <img src="bin.jpg" class="delete" data-id="task_id" />
         </li> -->
       </ul>
     </div>
